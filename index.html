@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Namegen — Character Name Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app__header">
+      <h1>Namegen</h1>
+      <p class="tagline">Generate character names for fictional universes.</p>
+    </header>
+
+    <section class="controls" aria-label="Generation parameters">
+      <div class="field">
+        <label for="country">Country of origin</label>
+        <select id="country"></select>
+      </div>
+
+      <div class="field">
+        <label for="language">Language of origin</label>
+        <select id="language"></select>
+      </div>
+
+      <div class="field">
+        <label for="era">Era</label>
+        <select id="era">
+          <option value="any">Any (random)</option>
+          <option value="archaic">Archaic</option>
+          <option value="current" selected>Current</option>
+          <option value="futuristic">Futuristic</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="genre">Genre</label>
+        <select id="genre">
+          <option value="any">Any (random)</option>
+          <option value="fantasy" selected>Fantasy</option>
+          <option value="scifi">Sci-Fi</option>
+        </select>
+      </div>
+
+      <div class="field field--small">
+        <label for="count">How many</label>
+        <input id="count" type="number" min="1" max="50" value="8" />
+      </div>
+
+      <div class="field field--checkbox">
+        <label>
+          <input id="randomAll" type="checkbox" />
+          <span>🎲 Completely random (ignore parameters)</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="generate" type="button" class="btn btn--primary">Generate names</button>
+        <button id="copyAll" type="button" class="btn" disabled>Copy all</button>
+      </div>
+    </section>
+
+    <section class="results" aria-label="Generated names">
+      <ul id="results" class="results__list"></ul>
+      <p id="emptyState" class="empty">Pick your parameters and hit <strong>Generate names</strong>.</p>
+    </section>
+
+    <footer class="app__footer">
+      <p>All generation happens in your browser — no network, no API keys.</p>
+    </footer>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
