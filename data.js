@@ -448,3 +448,142 @@ const SCIFI_DESIGNATIONS = {
   prefixes: ["VX", "KR", "ZeroOne", "Helix", "Nyx", "Unit", "Strain", "Mk", "Echo", "Tau"],
   separators: ["-", "-", " ", "/"],
 };
+
+/*
+ * Physical-description data. DESCRIPTORS holds the default (human-like) pools.
+ * SPECIES_PROFILES overrides specific pools/nouns for non-human language
+ * families so their descriptions stay coherent (e.g. Orcs aren't "blond").
+ * Anything a profile omits falls back to the DESCRIPTORS default.
+ */
+const DESCRIPTORS = {
+  genders: ["man", "woman", "person"],
+  ages: [
+    "in their late teens", "in their twenties", "in their thirties",
+    "in their forties", "middle-aged", "in their sixties", "elderly",
+  ],
+  // Plain adjectives/phrases that read naturally after the gender clause.
+  heights: ["short", "of medium height", "tall", "petite", "on the taller side", "lanky"],
+  builds: [
+    "slender", "lean", "average", "stocky", "broad-shouldered", "muscular",
+    "wiry", "heavyset", "willowy", "compact", "sturdy", "athletic",
+  ],
+  hairColors: [
+    "black", "dark brown", "brown", "chestnut", "auburn", "red",
+    "blond", "sandy", "grey", "silver", "white",
+  ],
+  hairStyles: [
+    "close-cropped", "short", "shoulder-length", "long", "curly", "wavy",
+    "straight", "braided", "tousled", "neatly tied-back",
+  ],
+  eyeColors: ["brown", "dark brown", "hazel", "green", "blue", "grey", "amber"],
+  skinTones: [
+    "pale", "fair", "light", "olive", "tan", "light brown", "brown",
+    "dark brown", "deep brown", "bronze", "ruddy",
+  ],
+  // Optional, low-key distinguishing features.
+  features: [
+    "a faint scar across one cheek", "a scattering of freckles",
+    "a crooked nose", "high cheekbones", "a warm, easy smile",
+    "weathered, calloused hands", "a small mole near one eye",
+    "laugh lines", "a strong jaw", "a gap-toothed grin",
+    "tired but kind eyes", "a few old scars on the hands",
+  ],
+};
+
+// Beards are only offered for the "man" gender on human-like profiles.
+const MASC_FEATURES = [
+  "a neatly kept beard", "a short beard", "a thick beard",
+  "light stubble", "a long braided beard",
+];
+
+// Hair tends to grey with age; these replace the colour for older characters.
+const OLDER_AGES = ["middle-aged", "in their sixties", "elderly"];
+const GREY_HAIRS = ["grey", "silver", "white", "steel grey", "salt-and-pepper"];
+
+const SPECIES_PROFILES = {
+  elvish: {
+    builds: ["slender", "willowy", "lithe", "lean", "graceful"],
+    signatureFeature: "gracefully pointed ears",
+    signatureChance: 0.85,
+  },
+  fae: {
+    builds: ["slight", "slender", "willowy", "petite", "delicate"],
+    heights: ["short", "petite", "small and quick", "of slight build"],
+    signatureFeature: "delicately pointed ears",
+    signatureChance: 0.85,
+  },
+  celestial: {
+    skinTones: ["luminous", "pale gold", "fair", "softly radiant", "ivory"],
+    eyeColors: ["gold", "pale blue", "silver", "amber"],
+    hairColors: ["golden", "silver-white", "white", "pale blond"],
+    signatureFeature: "a faint glow about them",
+    signatureChance: 0.5,
+  },
+  infernal: {
+    skinTones: ["ashen", "dusky red", "slate grey", "dark", "reddish"],
+    eyeColors: ["red", "amber", "black", "burning gold"],
+    hairColors: ["black", "dark red", "ash grey"],
+    signatureFeature: "small curved horns",
+    signatureChance: 0.75,
+  },
+  orcish: {
+    humanlike: false,
+    genders: ["man", "woman", "warrior"],
+    builds: ["broad-shouldered", "muscular", "heavyset", "powerfully built", "thickset"],
+    heights: ["tall", "towering", "broad and heavy", "imposing"],
+    skinTones: ["mossy green", "grey-green", "ashen grey", "olive green", "slate grey"],
+    eyeColors: ["yellow", "amber", "red", "dark"],
+    hairColors: ["black", "dark grey", "coarse black"],
+    signatureFeature: "prominent lower tusks",
+    signatureChance: 0.85,
+  },
+  dwarvish: {
+    builds: ["stocky", "broad-shouldered", "sturdy", "barrel-chested", "compact"],
+    heights: ["short", "short and broad", "of compact stature", "low and solid"],
+    signatureFeature: "a long, braided beard",
+    signatureChance: 0.7,
+  },
+  draconic: {
+    humanlike: false,
+    genders: ["man", "woman", "dragonkin"],
+    skinNoun: "scales",
+    skinTones: ["crimson", "emerald", "obsidian", "bronze", "ivory", "slate-blue", "gold"],
+    eyeNoun: "slit-pupiled eyes",
+    eyeColors: ["gold", "amber", "green", "red"],
+    hairless: true,
+    signatureFeature: "short, curved horns",
+    signatureChance: 0.7,
+  },
+  xenoid: {
+    humanlike: false,
+    genders: ["being", "creature", "drone"],
+    skinNoun: "chitin",
+    skinTones: ["mottled grey", "iridescent", "pale green", "bone-white", "dark"],
+    eyeNoun: "compound eyes",
+    eyeColors: ["black", "dark", "glassy"],
+    hairless: true,
+    signatureFeature: "a hard, segmented carapace",
+    signatureChance: 0.6,
+  },
+  synthetic: {
+    humanlike: false,
+    genders: ["android", "unit", "construct"],
+    ages: ["a current-gen model", "a late-model unit", "an aging model", "a prototype build", "a refurbished chassis"],
+    builds: ["sleek", "heavy-framed", "slender", "industrial", "compact"],
+    heights: ["tall", "of standard height", "compact", "imposing"],
+    skinNoun: "plating",
+    skinTones: ["matte grey", "brushed steel", "white", "gunmetal", "bronze"],
+    eyeNoun: "optical lenses",
+    eyeColors: ["blue", "amber", "red", "green", "white"],
+    hairless: true,
+    signatureFeature: "a softly glowing status light",
+    signatureChance: 0.5,
+  },
+  aquan: {
+    skinTones: ["blue-grey", "teal", "pale blue", "sea-green", "silver"],
+    eyeColors: ["sea-green", "blue", "silver", "dark"],
+    hairColors: ["dark", "blue-black", "silver", "pale green"],
+    signatureFeature: "faint gill-lines along the neck",
+    signatureChance: 0.6,
+  },
+};

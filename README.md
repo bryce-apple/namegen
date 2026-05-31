@@ -14,6 +14,12 @@ Each parameter has an **Any (random)** option, so you can pin some and randomize
 the rest. The **🎲 Completely random** checkbox ignores all parameters and
 randomizes everything per name.
 
+Tick **📝 Include a physical description** to get a short, basic description
+alongside each name (build, age, hair, eyes, skin, and an occasional
+distinguishing feature). Descriptions are species-aware: non-human families
+such as Orcish, Draconic, and Synthetic get coherent traits (scales, plating,
+tusks) rather than human ones.
+
 ## How it works
 
 Generation is fully **procedural and offline** — no network calls and no API

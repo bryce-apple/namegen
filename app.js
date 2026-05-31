@@ -52,6 +52,85 @@ function buildDesignation() {
   return `${prefix}${sep}${num}`;
 }
 
+/* ---------- physical description ---------- */
+
+const buildArticle = (word) => (/^[aeiou]/i.test(word) ? "An" : "A");
+
+// Join a short list naturally: ["a","b"] -> "a and b".
+function joinList(items) {
+  if (items.length <= 1) return items.join("");
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
+// Merge a species profile (if any) over the default descriptor pools.
+function resolveProfile(langKey) {
+  const p = SPECIES_PROFILES[langKey] || {};
+  return {
+    genders: p.genders || DESCRIPTORS.genders,
+    ages: p.ages || DESCRIPTORS.ages,
+    heights: p.heights || DESCRIPTORS.heights,
+    builds: p.builds || DESCRIPTORS.builds,
+    hairColors: p.hairColors || DESCRIPTORS.hairColors,
+    hairStyles: p.hairStyles || DESCRIPTORS.hairStyles,
+    eyeColors: p.eyeColors || DESCRIPTORS.eyeColors,
+    skinTones: p.skinTones || DESCRIPTORS.skinTones,
+    skinNoun: p.skinNoun || "skin",
+    eyeNoun: p.eyeNoun || "eyes",
+    hairless: !!p.hairless,
+    humanlike: p.humanlike !== false,
+    signatureFeature: p.signatureFeature || null,
+    signatureChance: p.signatureChance || 0,
+  };
+}
+
+// Build a basic physical description, species-aware and grammar-safe.
+function describe(langKey, genre) {
+  const P = resolveProfile(langKey);
+  const gender = pick(P.genders);
+  const age = pick(P.ages);
+  const height = pick(P.heights);
+  const build = pick(P.builds);
+
+  let hairColor = pick(P.hairColors);
+  if (!P.hairless && OLDER_AGES.includes(age) && chance(0.6)) {
+    hairColor = pick(GREY_HAIRS);
+  }
+  const hairStyle = pick(P.hairStyles);
+  const eyeColor = pick(P.eyeColors);
+  const skinTone = pick(P.skinTones);
+
+  // At most one understated distinguishing feature.
+  let feature = "";
+  if (P.signatureFeature && chance(P.signatureChance)) {
+    feature = P.signatureFeature;
+  } else if (P.humanlike && gender === "man" && !P.hairless && chance(0.35)) {
+    feature = pick(MASC_FEATURES);
+  } else if (P.humanlike && chance(0.4)) {
+    feature = pick(DESCRIPTORS.features);
+  }
+  if (!feature && genre === "scifi" && chance(0.15)) {
+    feature = "a small cybernetic implant at one temple";
+  }
+
+  const hair = P.hairless ? "" : `${hairStyle} ${hairColor}`;
+  const eyes = `${eyeColor} ${P.eyeNoun}`;
+  const skin = `${skinTone} ${P.skinNoun}`;
+
+  // Sentence 1: who they are. Sentence 2: colouring + optional feature.
+  const s1 = `${buildArticle(build)} ${build} ${gender}, ${age}, ${height}.`;
+  const traits = [];
+  if (hair) traits.push(`${hair} hair`);
+  traits.push(eyes);
+  let s2 = `They have ${joinList(traits)}, with ${skin}`;
+  s2 += feature ? `, and ${feature}.` : ".";
+
+  return {
+    summary: `${s1} ${s2}`,
+    gender, age, height, build, hair, eyes, skin, feature,
+  };
+}
+
 /* ---------- full name generation ---------- */
 
 function resolveLanguage(languageKey, countryKey) {
@@ -102,6 +181,7 @@ function generateOne(params) {
     language: lang.label,
     era,
     genre: genre === "scifi" ? "Sci-Fi" : "Fantasy",
+    description: params.describe ? describe(langKey, genre) : null,
   };
 }
 
@@ -134,14 +214,16 @@ function makeOption(value, label) {
 }
 
 function readParams() {
+  const describe = els.describe.checked;
   if (els.randomAll.checked) {
-    return { country: "any", language: "any", era: "any", genre: "any" };
+    return { country: "any", language: "any", era: "any", genre: "any", describe };
   }
   return {
     country: els.country.value,
     language: els.language.value,
     era: els.era.value,
     genre: els.genre.value,
+    describe,
   };
 }
 
@@ -170,6 +252,12 @@ function render(results) {
     const text = document.createElement("div");
     text.className = "result__text";
     text.appendChild(name);
+    if (r.description) {
+      const desc = document.createElement("span");
+      desc.className = "result__desc";
+      desc.textContent = r.description.summary;
+      text.appendChild(desc);
+    }
     text.appendChild(meta);
 
     li.appendChild(text);
@@ -211,7 +299,7 @@ function handleCopyAll() {
 function init() {
   [
     "country", "language", "era", "genre", "count",
-    "randomAll", "generate", "copyAll", "results", "emptyState",
+    "randomAll", "describe", "generate", "copyAll", "results", "emptyState",
   ].forEach((id) => (els[id] = document.getElementById(id)));
 
   populateSelects();
