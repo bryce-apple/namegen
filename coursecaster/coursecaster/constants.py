@@ -55,18 +55,19 @@ GUID_SUFFIXES = {
 }
 
 # ---------------------------------------------------------------------------
-# Cast targets that the corpus, once present, must confirm.  Kept here so a
-# corpus finding changes one line, not cast logic.  Each is annotated
-# UNVERIFIED where the brief gave no corpus-confirmed markup.
+# Cast targets.  "corpus" = confirmed by corpus study (see STUDY.md);
+# "UNVERIFIED" = no corpus witness, kept here so a finding changes one line.
 # ---------------------------------------------------------------------------
-OBJECTIVE_SIDEBAR_CLASS = "topics-to-understand"          # corpus-confirmed (§5.3)
-OBJECTIVE_SIDEBAR_TITLE = "Learning Objectives"           # corpus-confirmed (§5.3)
-SUMMARY_SIDEBAR_CLASS = "summary"                         # UNVERIFIED cast target
-SUMMARY_SIDEBAR_TITLE = "Summary"                         # UNVERIFIED cast target
-INTRODUCTION_SECTION_TITLE = "Introduction"               # UNVERIFIED wording
-TERMINAL_ACTIVITY_SECTION_TITLE = "Activities"            # UNVERIFIED wording
-FIGURE_DEFAULT_CLASS = "figure-no-box"                    # corpus-confirmed (§5.4)
-CREDIT_PARA_STYLE = "font-size:8pt"                       # corpus-confirmed (§5.4)
+OBJECTIVE_SIDEBAR_CLASS = "topics-to-understand"          # corpus (2016 ×12)
+OBJECTIVE_SIDEBAR_TITLE = "Learning Objectives"           # corpus (2016 ×12)
+SUMMARY_SECTION_TITLE = "Summary"                         # corpus (1761c ×12): a section, not a sidebar
+INTRODUCTION_SECTION_TITLE = "Introduction"               # corpus (COM, 1761c)
+TERMINAL_ACTIVITY_SECTION_TITLE = "Quick Check"           # corpus majority; manifest `title` overrides
+FIGURE_DEFAULT_CLASS = "figure-no-box"                    # corpus (universal, 326/327)
+CREDIT_PARA_STYLE = "font-size:8pt"                       # corpus (220 credit paras)
+VIDEO_DEFAULT_WIDTH = "450"                               # corpus (57/57 videodata)
+ACCESS_OPTION_KEY = "access"                              # corpus: me:option on paid chapters
+EQUATION_ALT_ROLE = "latex"                               # UNVERIFIED: no equation in any corpus course
 
 # Address conventions (mechanical, enforced — never inferred):
 #   *-S0  : introduction subsection of its container (cast with label="")

@@ -63,7 +63,9 @@ BLOCK_SPECS = {
         "body": BODY_NONE,
     },
     "table": {
-        "attrs": set(),
+        # ``address=`` makes a table an {{xref:}} target (corpus xrefs hit
+        # tables 6 times); it binds no manifest entry.
+        "attrs": {"address"},
         "required_attrs": set(),
         "fields": {"caption", "source"},
         "body": BODY_TABLE,

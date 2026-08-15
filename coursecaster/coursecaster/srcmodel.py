@@ -108,6 +108,7 @@ class Block:
     body: list = field(default_factory=list)   # parsed body nodes
     raw_body: str = ""          # verbatim body text (equation, xml)
     table: Optional[MarkdownTable] = None      # for :::table
+    footnotes: dict = field(default_factory=dict)  # defs authored in body
     line: int = 0
 
 
